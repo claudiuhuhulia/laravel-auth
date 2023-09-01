@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Str;
+
 
 
 
@@ -25,7 +27,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.projects.create');
     }
 
     /**
@@ -33,7 +35,16 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+
+        $project = new Project();
+
+        $project->fill($data);
+
+        $project->slug = Str::slug($project->name, '-');
+
+        $project->save();
+        return to_route('admin.projects.show', compact('project'))->with('alert-type', 'success')->with('alert-message', 'Progetto aggiunto con successo');;
     }
 
     /**
@@ -66,6 +77,6 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-        return to_route('admin.projects.index')->with('type', 'success')->with('message', 'Post eliminato con successo');
+        return to_route('admin.projects.index')->with('alert-type', 'success')->with('alert-message', 'Progetto eliminato con successo');
     }
 }

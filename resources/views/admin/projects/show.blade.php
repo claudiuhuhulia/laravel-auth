@@ -7,7 +7,7 @@
     </header>
     <hr>
     <div class="clearfix">
-        <img class="float-start me-2" src="{{ $project->image }}" alt="{{ $project->name }}">
+        <img class="float-start me-2 img-fluid" src="{{ $project->image }}" alt="{{ $project->name }}" width="250">
         <p>{{ $project->content }}</p>
         <div>
             <strong>Creato il:</strong>{{ $project->created_at }}
