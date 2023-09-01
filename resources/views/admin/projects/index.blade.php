@@ -4,8 +4,9 @@
 
 
 @section('content')
-    <header>
+    <header class="d-flex justify-content-between align-items-center">
         <h1>Projects</h1>
+        <a class="btn btn-success" href="{{ route('admin.projects.create') }}">Nuovo Progetto</a>
     </header>
     <hr>
     <table class="table table-dark table-striped">
@@ -26,20 +27,22 @@
                     <td>{{ $project->slug }}</td>
                     <td>{{ $project->created_at }}</td>
                     <td>{{ $project->updated_at }}</td>
-                    <td class="d-flex">
-                        <a class="btn btn-sm btn-primary" href="{{ route('admin.projects.show', $project) }}">
-                            <i class="fas fa-eye">
-                            </i></a>
-                        <a class="btn btn-sm btn-warning mx-2" href="{{ route('admin.projects.edit', $project) }}">
-                            <i class="fas fa-pencil"></i>
-                        </a>
-                        <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
-                            @method('DELETE')
-                            @csrf
-                            <button class="btn btn-sm btn-danger">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
+                    <td>
+                        <div class="d-flex">
+                            <a class="btn btn-sm btn-primary" href="{{ route('admin.projects.show', $project) }}">
+                                <i class="fas fa-eye">
+                                </i></a>
+                            <a class="btn btn-sm btn-warning mx-2" href="{{ route('admin.projects.edit', $project) }}">
+                                <i class="fas fa-pencil"></i>
+                            </a>
+                            <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <button class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             @empty
