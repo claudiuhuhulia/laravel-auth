@@ -7,7 +7,9 @@
     </header>
     <hr>
     <div class="clearfix">
-        <img class="float-start me-2 img-fluid" src="{{ $project->image }}" alt="{{ $project->name }}" width="250">
+        @if ($project->image)
+            <img class="float-start me-2 img-fluid" src="{{ $project->image }}" alt="{{ $project->name }}" width="250">
+        @endif
         <p>{{ $project->content }}</p>
         <div>
             <strong>Creato il:</strong>{{ $project->created_at }}
