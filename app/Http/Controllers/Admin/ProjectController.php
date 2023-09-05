@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -38,7 +39,7 @@ class ProjectController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:50', 'unique:projects'],
-            'image' => 'nullable|url',
+            'image' => 'nullable|image:jpg,jpeg,png',
             'content' => 'required|string'
 
         ], [
@@ -46,11 +47,17 @@ class ProjectController extends Controller
             'name.max' => 'Il nome deve essere lungo massimo :max caratteri',
             'name.unique' => "Esiste già un progetto dal titolo $request->name",
             'content.required' => 'non può esistere un progetto senza contenuto',
-            'image.url' => "L'url no è valido",
+            'image.image' => "Il file caricato non è valido",
         ]);
         $data = $request->all();
 
+
         $project = new Project();
+
+        if (array_key_exists('image', $data)) {
+            $img_url = Storage::putFile('projects_images', $data['image']);
+            $data['image'] = $img_url;
+        }
 
         $project->fill($data);
 
@@ -83,7 +90,7 @@ class ProjectController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:50', Rule::unique('projects')->ignore($project)],
-            'image' => 'nullable|url',
+            'image' => 'nullable|image:jpg,jpeg,png',
             'content' => 'required|string'
 
         ], [
@@ -91,7 +98,7 @@ class ProjectController extends Controller
             'name.max' => 'Il nome deve essere lungo massimo :max caratteri',
             'name.unique' => "Esiste già un progetto dal titolo $request->name",
             'content.required' => 'non può esistere un progetto senza contenuto',
-            'image.url' => "L'url no è valido",
+            'image.image' => "Il file caricato non è valido",
         ]);
         $data = $request->all();
         $data['slug'] = Str::slug($data['name'], '-');
