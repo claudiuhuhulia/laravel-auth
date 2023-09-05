@@ -6,9 +6,7 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
-
-
-
+use Illuminate\Validation\Rule;
 
 class ProjectController extends Controller
 {
@@ -27,6 +25,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
+
         $project = new Project();
 
         return view('admin.projects.create', compact('project'));
@@ -37,6 +36,18 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => ['required', 'string', 'max:50', 'unique:projects'],
+            'image' => 'nullable|url',
+            'content' => 'required|string'
+
+        ], [
+            'name.required' => 'Il nome è obbligatorio',
+            'name.max' => 'Il nome deve essere lungo massimo :max caratteri',
+            'name.unique' => "Esiste già un progetto dal titolo $request->name",
+            'content.required' => 'non può esistere un progetto senza contenuto',
+            'image.url' => "L'url no è valido",
+        ]);
         $data = $request->all();
 
         $project = new Project();
@@ -70,6 +81,18 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        $request->validate([
+            'name' => ['required', 'string', 'max:50', Rule::unique('projects')->ignore($project)],
+            'image' => 'nullable|url',
+            'content' => 'required|string'
+
+        ], [
+            'name.required' => 'Il nome è obbligatorio',
+            'name.max' => 'Il nome deve essere lungo massimo :max caratteri',
+            'name.unique' => "Esiste già un progetto dal titolo $request->name",
+            'content.required' => 'non può esistere un progetto senza contenuto',
+            'image.url' => "L'url no è valido",
+        ]);
         $data = $request->all();
         $data['slug'] = Str::slug($data['name'], '-');
         $project->update($data);
