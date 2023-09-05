@@ -96,7 +96,7 @@ class ProjectController extends Controller
         $data = $request->all();
         $data['slug'] = Str::slug($data['name'], '-');
         $project->update($data);
-        return to_route('admin.projects.index', $project)->with('alert-type', 'success')->with('alert-message', 'Progetto modificato con successo');;
+        return to_route('admin.projects.index', $project)->with('alert-type', 'success')->with('alert-message', 'Progetto modificato con successo');
     }
 
     /**
@@ -106,5 +106,35 @@ class ProjectController extends Controller
     {
         $project->delete();
         return to_route('admin.projects.index')->with('alert-type', 'danger')->with('alert-message', 'Progetto eliminato con successo');
+    }
+
+    public function trash()
+    {
+        $projects = Project::onlyTrashed()->get();
+        return view('admin.projects.trash', compact('projects'));
+    }
+
+
+    public function restore(string $id)
+    {
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $project->restore();
+        return to_route('admin.projects.index')->with('alert-type', 'success')->with('alert-message', 'Progetto ripristinato con successo');
+    }
+
+
+    public function drop(String $id)
+    {
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $project->forceDelete();
+
+        return to_route('admin.projects.trash')->with('alert-message', "Progetto eliminato definitivamente")->with('alert-type', 'danger');
+    }
+
+    public function dropAll()
+    {
+        Project::onlyTrashed()->forceDelete();
+
+        return to_route('admin.projects.trash')->with('alert-message', "Clear trash")->with('alert-type', 'danger');
     }
 }

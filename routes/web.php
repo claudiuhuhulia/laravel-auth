@@ -22,6 +22,10 @@ Route::get('/', [GuestHomeController::class, 'index'])->name('guest.home');
 
 Route::prefix('/admin')->name('admin.')->middleware(['auth'])->group(function () {
     Route::get('/', [AdminHomeController::class, 'index'])->name('home');
+    Route::get('/projects/trash', [ProjectController::class, 'trash'])->name('projects.trash');
+    Route::delete('/projects/dropAll', [ProjectController::class, 'dropAll'])->name('projects.dropAll');
+    Route::delete('/projects/{project}/drop', [ProjectController::class, 'drop'])->name('projects.drop');
+
     Route::patch('/projects/{project}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
     Route::resource('projects', ProjectController::class);
 });
