@@ -12,9 +12,10 @@
     <div class="col-6">
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name"
-                placeholder="Inserisci il nome del progetto" value="{{ old('name', $project->name) }}" maxlength="50"
-                required>
+            <input type="text"
+                class="form-control @error('name') is-invalid @elseif(old('name')) is-valid @enderror"
+                id="name" name="name" placeholder="Inserisci il nome del progetto"
+                value="{{ old('name', $project->name) }}" maxlength="50" required>
             @error('name')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -32,8 +33,8 @@
     <div class="col-12">
         <div class="mb-3">
             <label for="content" class="form-label">Content</label>
-            <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="10"
-                required>{{ old('content', $project->content) }}</textarea>
+            <textarea class="form-control @error('content') is-invalid  @elseif(old('content')) is-valid @enderror"
+                id="content" name="content" rows="10" required>{{ old('content', $project->content) }}</textarea>
             @error('content')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -42,8 +43,10 @@
     <div class="col-11">
         <div class="mb-3">
             <label for="image" class="form-label">Url dell'immagine</label>
-            <input type="url" class="form-control @error('image') is-invalid @enderror" id="image"
-                name="image" value="{{ old('image', $project->image) }}" placeholder="Insersisci un url valido">
+            <input type="url"
+                class="form-control @error('image') is-invalid  @elseif(old('image')) is-valid @enderror"
+                id="image" name="image" value="{{ old('image', $project->image) }}"
+                placeholder="Insersisci un url valido">
             @error('image')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
