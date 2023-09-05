@@ -2,8 +2,11 @@
 @section('title', 'Modifica Project')
 
 @section('content')
-    <header>
+    <header class="d-flex justify-content-between align-items center">
         <h1>Modifica Projetto</h1>
+        <a class="btn btn-secondary my-3" href="{{ route('admin.projects.index') }}"><i
+                class="fas fa-arrow-left me-2"></i>Torna
+            indietro</a>
     </header>
     <hr>
     <form action="{{ route('admin.projects.update', $project) }}" method="POST">
