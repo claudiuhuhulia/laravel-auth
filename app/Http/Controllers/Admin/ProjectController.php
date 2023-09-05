@@ -80,6 +80,6 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         $project->delete();
-        return to_route('admin.projects.index')->with('alert-type', 'success')->with('alert-message', 'Progetto eliminato con successo');
+        return to_route('admin.projects.index')->with('alert-type', 'danger')->with('alert-message', 'Progetto eliminato con successo');
     }
 }
